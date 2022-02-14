@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# trap TERM and change to QUIT
+trap 'echo killing $PID; kill -SIGKILL $PID' TERM
+
+# program to run
+"insert your bundle exec here" &
+
+# capture PID and wait
+PID=$!
+wait

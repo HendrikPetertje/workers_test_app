@@ -52,5 +52,41 @@ The different options:
 ## Starting the server:
 bin/dev
 
-## Killing the server (make sure ):
+## Killing the server:
 bin/rip
+
+## Attempt report
+### Attempt 1: Sneakers
+
+There is no need for any bin/rip scripts. the default job runs for 10 seconds
+and default foreman has 4 seconds of patience, so no need to kill anything,
+foreman already does it for us.
+
+Sneakers works pretty nicely, it is fault tolerant, keeps jobs and uses
+an ackable system, so all of this is pretty frickin' cool!
+
+I did however run into some problems:
+
+1: Shutting down workers by getting the main process SIGKILL-ed leaves
+orphaned connections to rabbitMQ that aren't shut down. This plus
+connection time-outs (workers that haven't gotten anything to do dying
+silently after a while) and other problems is posing some troubles on it
+all.
+
+The solution for this seems to be to use Bunny to make connections for
+us instead!
+
+There are however some other minor issues:
+
+1. queue_as is not respected, so everything is put on the same queue, so
+   this will not scale well with multiple jobs. (unless you are using
+   workers instead of active_job)
+2. "retry" works on native "workers" but not in active-job, so a failed
+   job will fail and then never be sent or read from the retry-queue.
+3. There is no support for delayed jobs, we have a bunch of those in our
+   project.
+4 there is no documentation at all for ActiveJob.
+5. https://github.com/jondot/sneakers/pull/446 retry is broken, pull
+   request has been open since forever.
+
+Next thing to try out [advanced-sneakers-activejob](https://github.com/veeqo/advanced-sneakers-activejob)

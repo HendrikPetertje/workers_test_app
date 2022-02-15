@@ -6,10 +6,10 @@ ongoing projects, this to replace Sidekiq (free) which raises issues for us by
 forgetting about jobs when it crashes.
 
 ## requirements for the new solution:
-- Doesn't loose stuff on unscheduled interrupts
-- Sits really close or works in tandem with Rails ActiveJob, so we stay in the walled garden of rails as much as possible and don't have to rewrite the entire app
-- Works with future versions of Rails
-- Needs to be able to retry jobs x times and have some kind of interface allowing us to re-schedule or inspect whats going on
+- Doesn't loose stuff on unscheduled interrupts.
+- Sits really close or works in tandem with Rails ActiveJob, so we stay in the walled garden of rails as much as possible and don't have to rewrite the entire app.
+- Works with future versions of Rails.
+- Needs to be able to retry jobs x times and have some kind of interface allowing us to re-schedule or inspect whats going on.
 - schedule stuff
 
 ## How to test
@@ -17,22 +17,18 @@ forgetting about jobs when it crashes.
 a request.
 - A worker should be invoked with this name argument. called a NameWorker or
   something
-- The worker process should start, wait 10 seconds and then Create a new file
-  using:
+- The worker process should start, wait 10 seconds and then Log out a success
+  message.
 
-```
-File.open(Rails.root.join('tmp', "#{name}.txt"), "w") {}
-```
-
-- The file should be created after 10 seconds when visiting
-  http://localhost:3000/?name=foo
-- Add your worker starter to bin/hard_worker
-- Uncomment the worker in Procfile.dev
+- All of this should be created after 10 seconds when visiting
+  http://localhost:3000/?name=foo.
+- Add your worker starter to bin/hard_worker.
+- Uncomment the worker in Procfile.dev.
 - start the rails server with `bin/dev`
 - when exiting `bin/dev` (or otherwise killing the worker using a SIGKILL) the
   job should be preserved, restarting the rails server + worker server should
-  cause the job to be finished
-- optional: create an rspec test that tests everything
+  cause the job to be finished.
+- optional: create an rspec test that tests everything.
 
 ## How to get started
 We have a list of plugins we'd like to try out, a developer on the team can

@@ -47,6 +47,11 @@ gem 'bootsnap', require: false
 # Use Sass to process CSS
 # gem "sassc-rails"
 
+gem 'resque'
+# gem 'resque-retry' # Not working anymore, hasn't seen updates in 7 years
+# gem 'resque-scheduler' # Required by resque-retry
+
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 

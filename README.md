@@ -50,3 +50,31 @@ bin/dev
 
 ## Killing the server (make sure ):
 bin/rip
+
+## Attempt report
+### Attempt 3: Resque
+Time to try out a completely different framework then.
+I noticed that a lot of the things we require in our project (like retrying,
+scheduling and a web interface) were present as stand-alone plugins, but a lot
+of these plugins haven't seen updates for 4-7 years, so I wasn't too hopeful from
+the get go. I ended up installing the base system just to see if I could get
+things up and running and I don't know, it almost works but:
+
+- Jobs are lost on app down, there is some work going on trying to implement 
+  RPOPLPUSH with Redis, but it relies on jobs timing out rather than connections
+  being dropped for a longer time like RabbitMQ did with its unacked system. The
+  entire functionality is still in development too
+  https://github.com/resque/resque/pull/1788.
+- There's a lot of own development required to actually make the retry logic
+  respect waiting in some kind of Backoff system.
+
+That said, the project does come with
+
+- Scheduling
+- CRON
+- web interfaces and failure inspection
+- Airbrake & Newrelic support
+- some rudimentary form of retry
+
+But given it doesn't actually fix the base issue we have with Sidekiq right now
+this entire development path is going to be a no-go.
